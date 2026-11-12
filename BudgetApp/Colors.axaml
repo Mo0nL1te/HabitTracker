@@ -4,28 +4,40 @@
     <ResourceDictionary.ThemeDictionaries>
         <!-- Светлая тема -->
         <ResourceDictionary x:Key="Light">
-            <Color x:Key="WindowBackgroundColor">#F3F4F6</Color>
-            <Color x:Key="ButtonBackgroundColor">#FFFFFF</Color>
-            <Color x:Key="PrimaryTextColor">#111827</Color>
-            <Color x:Key="ResultTextColor">#1da348</Color>
+            <Color x:Key="WindowBackgroundColor">#F3F4F6</Color> <!--Dirty white-->
+            <Color x:Key="ButtonBackgroundColor">#FFFFFF</Color> <!--White-->
+            <Color x:Key="PrimaryTextColor">#111827</Color> <!--Dark blue-->
+            <Color x:Key="ResultTextColor">#1da348</Color> <!--Green-->
+			<Color x:Key="WarnTextColor">#c4a121</Color> <!--Yellow-->
+			<Color x:Key="BadTextColor">#d91616</Color> <!--Red-->
+			<Color x:Key="SelectCurrentColor">#2C6FB5</Color> <!--Selection color-->
 
             <SolidColorBrush x:Key="WindowBackgroundBrush" Color="{StaticResource WindowBackgroundColor}" />
             <SolidColorBrush x:Key="ButtonBackgroundBrush" Color="{StaticResource ButtonBackgroundColor}" />
             <SolidColorBrush x:Key="PrimaryTextBrush" Color="{StaticResource PrimaryTextColor}" />
             <SolidColorBrush x:Key="ResultTextBrush" Color="{StaticResource ResultTextColor}" />
+			<SolidColorBrush x:Key="WarnTextBrush" Color="{StaticResource WarnTextColor}" />
+			<SolidColorBrush x:Key="BadTextBrush" Color="{StaticResource BadTextColor}" />
+			<SolidColorBrush x:Key="SelectCurrentBrush" Color="{StaticResource SelectCurrentColor}" />
         </ResourceDictionary>
 
         <!-- Темная тема -->
         <ResourceDictionary x:Key="Dark">
-            <Color x:Key="WindowBackgroundColor">#1E1E1E</Color>
-            <Color x:Key="ButtonBackgroundColor">#2D2D30</Color>
-            <Color x:Key="PrimaryTextColor">#F9FAFB</Color>
-			<Color x:Key="ResultTextColor">#1da348</Color>
+            <Color x:Key="WindowBackgroundColor">#1E1E1E</Color> <!--Black-->
+            <Color x:Key="ButtonBackgroundColor">#2D2D30</Color> <!--Dark grey-->
+            <Color x:Key="PrimaryTextColor">#F9FAFB</Color> <!--White-->
+			<Color x:Key="ResultTextColor">#1da348</Color> <!--Green-->
+			<Color x:Key="WarnTextColor">#c4a121</Color> <!--Yellow-->
+			<Color x:Key="BadTextColor">#d91616</Color> <!--Red-->
+			<Color x:Key="SelectCurrentColor">#7FB3E8</Color> <!--Selection color-->
 
             <SolidColorBrush x:Key="WindowBackgroundBrush" Color="{StaticResource WindowBackgroundColor}" />
             <SolidColorBrush x:Key="ButtonBackgroundBrush" Color="{StaticResource ButtonBackgroundColor}" />
             <SolidColorBrush x:Key="PrimaryTextBrush" Color="{StaticResource PrimaryTextColor}" />
 			<SolidColorBrush x:Key="ResultTextBrush" Color="{StaticResource ResultTextColor}" />
+			<SolidColorBrush x:Key="WarnTextBrush" Color="{StaticResource WarnTextColor}" />
+			<SolidColorBrush x:Key="BadTextBrush" Color="{StaticResource BadTextColor}" />
+			<SolidColorBrush x:Key="SelectCurrentBrush" Color="{StaticResource SelectCurrentColor}" />
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
 

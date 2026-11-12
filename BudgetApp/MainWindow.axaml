@@ -3,186 +3,211 @@
         x:Class="BudgetApp.MainWindow"
         x:Name="Root"
         Title="Доходы/расходы" Width="800" Height="860"
-        Background="{DynamicResource WindowBackGroundBrush}" FontSize="14">
+        Background="{DynamicResource WindowBackgroundBrush}" FontSize="14">
 
-  <Window.Resources>
-    <!-- Шаблон статьи (обязательной и необязательной) -->
-    <DataTemplate x:Key="ItemTemplate">
-      <StackPanel Margin="0,6,0,0">
-        <StackPanel Orientation="Horizontal" Spacing="8">
-          <TextBlock Text="{Binding Name}" FontWeight="SemiBold" Classes="row"/>
-          <TextBlock Text="{Binding CounterText}" Foreground="{Binding CounterBrush}" Classes="row"/>
-          <TextBlock Text="{Binding CarryNote}" Foreground="#C26A00" Classes="row"/>
-          <TextBox Width="90" VerticalAlignment="Center"
-                   Text="{Binding AddAmountText}" Watermark="сумма"/>
-          <Button Content="+ трата" Classes="mini" Click="OnAddExpense"/>
-        </StackPanel>
-        <ItemsControl ItemsSource="{Binding Expenses}" Margin="14,2,0,0">
-          <ItemsControl.ItemTemplate>
-            <DataTemplate>
-              <Grid ColumnDefinitions="*,Auto">
-                <TextBlock Text="{Binding Text}"/>
-                <Button Grid.Column="1" Content="✕" Classes="mini" Click="OnRemoveExpense"/>
-              </Grid>
-            </DataTemplate>
-          </ItemsControl.ItemTemplate>
-        </ItemsControl>
-      </StackPanel>
-    </DataTemplate>
-  </Window.Resources>
+	<Window.Resources>
+		<!-- Шаблон статьи (обязательной и необязательной) -->
+		<DataTemplate x:Key="ItemTemplate">
+			<StackPanel Margin="0,6,0,0">
+				<StackPanel Orientation="Horizontal" Spacing="8">
+					<TextBlock Text="{Binding Name}" FontWeight="SemiBold" Classes="row"/>
+					<TextBlock Text="{Binding CounterText}" Classes="cnt"
+							   Classes.ok="{Binding IsOk}"
+							   Classes.warn="{Binding IsWarn}"
+							   Classes.bad="{Binding IsBad}"/>
+					<TextBlock Text="{Binding CarryNote}" Foreground="#C26A00" Classes="row"/>
+					<TextBox Width="90" VerticalAlignment="Center"
+							 Text="{Binding AddAmountText}" Watermark="сумма"/>
+					<Button Content="+ трата" Classes="mini" Click="OnAddExpense"/>
+				</StackPanel>
+				<ItemsControl ItemsSource="{Binding Expenses}" Margin="14,2,0,0">
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<Grid ColumnDefinitions="*,Auto">
+								<TextBlock Text="{Binding Text}"/>
+								<Button Grid.Column="1" Content="✕" Classes="mini" Click="OnRemoveExpense"/>
+							</Grid>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+			</StackPanel>
+		</DataTemplate>
+	</Window.Resources>
 
-  <Window.Styles>
-    <Style Selector="TextBlock.header">
-      <Setter Property="FontSize" Value="16"/>
-      <Setter Property="FontWeight" Value="Bold"/>
-      <Setter Property="Margin" Value="0,0,0,6"/>
-    </Style>
-    <Style Selector="TextBlock.row">
-      <Setter Property="VerticalAlignment" Value="Center"/>
-    </Style>
-    <Style Selector="Border.card">
-      <Setter Property="Background" Value="{DynamicResource ButtonBackgroundColor}"/>
-      <Setter Property="CornerRadius" Value="10"/>
-      <Setter Property="Padding" Value="14"/>
-      <Setter Property="Margin" Value="0,0,0,12"/>
-    </Style>
-    <Style Selector="Button.square">
-      <Setter Property="Width" Value="54"/>
-      <Setter Property="Height" Value="34"/>
-      <Setter Property="Margin" Value="2"/>
-      <Setter Property="Padding" Value="0"/>
-      <Setter Property="CornerRadius" Value="7"/>
-      <Setter Property="FontSize" Value="11"/>
-      <Setter Property="Background" Value="{DynamicResource ButtonBackgroundColor}"/>
-      <Setter Property="BorderThickness" Value="0"/>
-    </Style>
-    <Style Selector="Button.square.done">
-      <Setter Property="Background" Value="{DynamicResource ButtonBackgroundColor}"/>
-      <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
-    </Style>
-    <Style Selector="Button.square.current">
-      <Setter Property="BorderBrush" Value="{DynamicResource PrimaryTextBrush}"/>
-      <Setter Property="BorderThickness" Value="2"/>
-    </Style>
-    <Style Selector="Button.mini">
-      <Setter Property="Padding" Value="8,3"/>
-      <Setter Property="FontSize" Value="12"/>
-      <Setter Property="Margin" Value="4,0"/>
-      <Setter Property="VerticalAlignment" Value="Center"/>
-    </Style>
-    <Style Selector="TextBox.small">
-      <Setter Property="Width" Value="120"/>
-      <Setter Property="VerticalAlignment" Value="Center"/>
-    </Style>
-  </Window.Styles>
+	<Window.Styles>
+		<Style Selector="TextBlock.header">
+			<Setter Property="FontSize" Value="16"/>
+			<Setter Property="FontWeight" Value="Bold"/>
+			<Setter Property="Margin" Value="0,0,0,6"/>
+		</Style>
+		<Style Selector="TextBlock.row">
+			<Setter Property="VerticalAlignment" Value="Center"/>
+		</Style>
+		<Style Selector="Border.card">
+			<Setter Property="Background" Value="{DynamicResource ButtonBackgroundBrush}"/>
+			<Setter Property="CornerRadius" Value="10"/>
+			<Setter Property="Padding" Value="14"/>
+			<Setter Property="Margin" Value="0,0,0,12"/>
+		</Style>
+		<Style Selector="Button.square">
+			<Setter Property="Width" Value="62"/>
+			<Setter Property="Height" Value="34"/>
+			<Setter Property="Margin" Value="2"/>
+			<Setter Property="Padding" Value="0"/>
+			<Setter Property="CornerRadius" Value="7"/>
+			<Setter Property="FontSize" Value="12"/>
+			<Setter Property="Background" Value="{DynamicResource ButtonBackgroundColor}"/>
+			<Setter Property="BorderThickness" Value="0"/>
+			<Setter Property="HorizontalContentAlignment" Value="Center"/>
+			<Setter Property="VerticalContentAlignment" Value="Center"/>
+		</Style>
+		<Style Selector="Button.square.done">
+			<Setter Property="Background" Value="{DynamicResource ButtonBackgroundColor}"/>
+			<Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
+		</Style>
+		<Style Selector="Button.square.current">
+			<Setter Property="Background" Value="{DynamicResource SelectCurrentBrush}"/>
+			<Setter Property="FontWeight" Value="Bold"/>
+		</Style>
+		<Style Selector="Button.mini">
+			<Setter Property="Padding" Value="8,3"/>
+			<Setter Property="FontSize" Value="12"/>
+			<Setter Property="Margin" Value="4,0"/>
+			<Setter Property="VerticalAlignment" Value="Center"/>
+		</Style>
+		<!-- Семантические цвета из темы -->
+		<Style Selector="TextBlock.cnt">
+			<Setter Property="VerticalAlignment" Value="Center"/>
+		</Style>
+		<Style Selector="TextBlock.ok">
+			<Setter Property="Foreground" Value="{DynamicResource ResultTextBrush}"/>
+		</Style>
+		<Style Selector="TextBlock.warn">
+			<Setter Property="Foreground" Value="{DynamicResource WarnTextBrush}"/>
+		</Style>
+		<Style Selector="TextBlock.bad">
+			<Setter Property="Foreground" Value="{DynamicResource BadTextBrush}"/>
+		</Style>
+		<Style Selector="TextBlock.free">
+			<Setter Property="FontSize" Value="17"/>
+			<Setter Property="FontWeight" Value="Bold"/>
+		</Style>
+		<Style Selector="TextBlock.free-ok">
+			<Setter Property="Foreground" Value="{DynamicResource ResultTextBrush}"/>
+		</Style>
+		<Style Selector="TextBlock.free-bad">
+			<Setter Property="Foreground" Value="{DynamicResource BadTextBrush}"/>
+		</Style>
+		<Style Selector="TextBox.small">
+			<Setter Property="Width" Value="120"/>
+			<Setter Property="VerticalAlignment" Value="Center"/>
+		</Style>
+	</Window.Styles>
 
-  <DockPanel>
+	<DockPanel>
 
-    <!-- Календарь месяцев сверху -->
-    <Border DockPanel.Dock="Top" Background="{DynamicResource WindowBackGroundBrush}" Padding="10,8"> <!--#0d0e36--> 
-      <DockPanel>
-        <Button DockPanel.Dock="Left" Content="‹ добавить месяц"
-                Click="OnAddMonthBack" VerticalAlignment="Center"/>
-        <ScrollViewer HorizontalScrollBarVisibility="Hidden">
-          <ItemsControl ItemsSource="{Binding Months}">
-            <ItemsControl.ItemsPanel>
-              <ItemsPanelTemplate>
-                <StackPanel Orientation="Horizontal"/>
-              </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-              <DataTemplate>
-				  <Button Content="{Binding Short}"
-                        Classes.selected="{Binding IsSelected}"
-                        Classes.current="{Binding IsCurrent}"
-                        Click="OnMonthClick"/>
-              </DataTemplate>
-            </ItemsControl.ItemTemplate>
-          </ItemsControl>
-        </ScrollViewer>
-      </DockPanel>
-    </Border>
+		<!-- Календарь месяцев сверху -->
+		<Border DockPanel.Dock="Top" Background="{DynamicResource WindowBackgroundBrush}" Padding="10,8">
+			<DockPanel>
+				<Button DockPanel.Dock="Left" Content="‹ добавить месяц"
+						Click="OnAddMonthBack" VerticalAlignment="Center"/>
+				<ScrollViewer HorizontalScrollBarVisibility="Hidden">
+					<ItemsControl ItemsSource="{Binding Months}">
+						<ItemsControl.ItemsPanel>
+							<ItemsPanelTemplate>
+								<StackPanel Orientation="Horizontal"/>
+							</ItemsPanelTemplate>
+						</ItemsControl.ItemsPanel>
+						<ItemsControl.ItemTemplate>
+							<DataTemplate>
+								<Button Classes="square" Content="{Binding Short}"
+										Classes.done="{Binding IsDone}"
+										Classes.current="{Binding IsCurrent}"
+										Click="OnMonthClick"/>
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</ItemsControl>
+				</ScrollViewer>
+			</DockPanel>
+		</Border>
 
-    <ScrollViewer>
-      <StackPanel Margin="16" DataContext="{Binding Current}">
+		<ScrollViewer>
+			<StackPanel Margin="16" DataContext="{Binding Current}">
 
-        <TextBlock Text="{Binding Title}" FontSize="22" FontWeight="Bold" Margin="0,0,0,12" Foreground="{DynamicResource PrimaryTextBrush}"/>
+				<TextBlock Text="{Binding Title}" FontSize="22" FontWeight="Bold" Margin="0,0,0,12"/>
 
-        <!-- Доход: аванс + зп -->
-        <Border Classes="card">
-          <StackPanel>
-            <TextBlock Text="Доход" Classes="header"/>
-            <StackPanel Orientation="Horizontal" Spacing="10">
-              <TextBlock Text="Аванс (10-е):" Classes="row"/>
-              <TextBox Classes="small" Text="{Binding Income10Text}"/>
-              <TextBlock Text="Остаток ЗП (25-е):" Classes="row"/>
-              <TextBox Classes="small" Text="{Binding Income25Text}"/>
-              <TextBlock Text="{Binding IncomeText}" Classes="row" FontWeight="Bold"/>
-            </StackPanel>
-          </StackPanel>
-        </Border>
+				<!-- Доход: аванс + зп -->
+				<Border Classes="card">
+					<StackPanel>
+						<TextBlock Text="Доход" Classes="header"/>
+						<StackPanel Orientation="Horizontal" Spacing="10">
+							<TextBlock Text="Аванс (10-е):" Classes="row"/>
+							<TextBox Classes="small" Text="{Binding Income10Text}"/>
+							<TextBlock Text="Остаток ЗП (25-е):" Classes="row"/>
+							<TextBox Classes="small" Text="{Binding Income25Text}"/>
+							<TextBlock Text="{Binding IncomeText}" Classes="row" FontWeight="Bold"/>
+						</StackPanel>
+					</StackPanel>
+				</Border>
 
-        <!-- Обязательные статьи -->
-        <Border Classes="card">
-          <StackPanel Spacing="4">
-            <TextBlock Text="Статьи с планом (обязательные)" Classes="header"/>
-            <ItemsControl ItemsSource="{Binding RequiredItems}"
-                          ItemTemplate="{StaticResource ItemTemplate}"/>
-            <TextBlock Text="Статьи пока не заданы — добавьте первую ниже."
-                       Margin="0,6" Foreground="{DynamicResource PrimaryTextBrush}"
-                       IsVisible="{Binding HasNoItems}"/>
-            <Grid ColumnDefinitions="*,90,Auto,Auto" Margin="0,10,0,0">
-              <TextBox Text="{Binding #Root.DataContext.NewItemName}" Watermark="новая статья"/>
-              <TextBox Grid.Column="1" Margin="6,0,0,0"
-                       Text="{Binding #Root.DataContext.NewItemPlan}" Watermark="план"/>
-              <CheckBox Grid.Column="2" Margin="10,0" Content="необяз."
-                        IsChecked="{Binding #Root.DataContext.NewItemOptional}"/>
-              <Button Grid.Column="3" Content="+ статья" Click="OnAddItem"/>
-            </Grid>
-          </StackPanel>
-        </Border>
+				<!-- Обязательные статьи -->
+				<Border Classes="card">
+					<StackPanel Spacing="4">
+						<TextBlock Text="Статьи с планом (обязательные)" Classes="header"/>
+						<ItemsControl ItemsSource="{Binding RequiredItems}"
+									  ItemTemplate="{StaticResource ItemTemplate}"/>
+						<TextBlock Text="Статьи пока не заданы — добавьте первую ниже."
+								   Margin="0,6" Foreground="{DynamicResource PrimaryTextBrush}"
+								   IsVisible="{Binding HasNoItems}"/>
+						<Grid ColumnDefinitions="*,90,Auto,Auto" Margin="0,10,0,0">
+							<TextBox Text="{Binding #Root.DataContext.NewItemName}" Watermark="новая статья"/>
+							<TextBox Grid.Column="1" Margin="6,0,0,0"
+									 Text="{Binding #Root.DataContext.NewItemPlan}" Watermark="план"/>
+							<CheckBox Grid.Column="2" Margin="10,0" Content="необяз."
+									  IsChecked="{Binding #Root.DataContext.NewItemOptional}"/>
+							<Button Grid.Column="3" Content="+ статья" Click="OnAddItem"/>
+						</Grid>
+					</StackPanel>
+				</Border>
 
-        <!-- Необязательные статьи -->
-        <Border Classes="card">
-          <StackPanel Spacing="4">
-            <TextBlock Text="Необязательные траты" Classes="header" Foreground="{DynamicResource PrimaryTextBrush}"/>
-            <TextBlock FontSize="11" Foreground="#666" Margin="0,0,0,4"
-                       Text="Цвет: до 70% плана — зелёный, 70–100% — жёлтый, превышение — красное. Перерасход переносится на следующий месяц (перенос −N)."/>
-            <ItemsControl ItemsSource="{Binding OptionalItems}"
-                          ItemTemplate="{StaticResource ItemTemplate}"/>
-          </StackPanel>
-        </Border>
+				<!-- Необязательные статьи -->
+				<Border Classes="card">
+					<StackPanel Spacing="4">
+						<TextBlock Text="Необязательные траты" Classes="header"/>
+						<ItemsControl ItemsSource="{Binding OptionalItems}"
+									  ItemTemplate="{StaticResource ItemTemplate}"/>
+					</StackPanel>
+				</Border>
 
-        <!-- Разовые траты -->
-        <Border Classes="card">
-          <StackPanel Spacing="4">
-            <TextBlock Text="Разовые траты этого месяца" Classes="header"/>
-            <ItemsControl ItemsSource="{Binding OneOffsVM}">
-              <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                  <Grid ColumnDefinitions="*,Auto">
-                    <TextBlock Text="{Binding Text}"/>
-                    <Button Grid.Column="1" Content="✕" Classes="mini" Click="OnRemoveOneOff"/>
-                  </Grid>
-                </DataTemplate>
-              </ItemsControl.ItemTemplate>
-            </ItemsControl>
-            <Grid ColumnDefinitions="*,90,Auto" Margin="0,10,0,0">
-              <TextBox Text="{Binding #Root.DataContext.NewOneOffName}" Watermark="название"/>
-              <TextBox Grid.Column="1" Margin="6,0,0,0"
-                       Text="{Binding #Root.DataContext.NewOneOffAmount}" Watermark="сумма"/>
-              <Button Grid.Column="2" Content="+ разовая" Click="OnAddOneOff"/>
-            </Grid>
-          </StackPanel>
-        </Border>
-
-        <!-- Свободные деньги -->
-        <Border Classes="card">
-          <TextBlock Text="{Binding FreeText}" FontSize="17" FontWeight="Bold"
-                     Foreground="{DynamicResource ResultTextBrush}"/>
-        </Border>
-
-      </StackPanel>
-    </ScrollViewer>
-  </DockPanel>
+				<!-- Разовые траты -->
+				<Border Classes="card">
+					<StackPanel Spacing="4">
+						<TextBlock Text="Разовые траты этого месяца" Classes="header"/>
+						<ItemsControl ItemsSource="{Binding OneOffsVM}">
+							<ItemsControl.ItemTemplate>
+								<DataTemplate>
+									<Grid ColumnDefinitions="*,Auto">
+										<TextBlock Text="{Binding Text}"/>
+										<Button Grid.Column="1" Content="✕" Classes="mini" Click="OnRemoveOneOff"/>
+									</Grid>
+								</DataTemplate>
+							</ItemsControl.ItemTemplate>
+						</ItemsControl>
+						<Grid ColumnDefinitions="*,90,Auto" Margin="0,10,0,0">
+							<TextBox Text="{Binding #Root.DataContext.NewOneOffName}" Watermark="название"/>
+							<TextBox Grid.Column="1" Margin="6,0,0,0"
+									 Text="{Binding #Root.DataContext.NewOneOffAmount}" Watermark="сумма"/>
+							<Button Grid.Column="2" Content="+ разовая" Click="OnAddOneOff"/>
+						</Grid>
+					</StackPanel>
+				</Border>
+				<!-- Свободные деньги -->
+				<Border Classes="card">
+					<TextBlock Text="{Binding FreeText}" Classes="free"
+								Classes.free-ok="{Binding IsFreeOk}"
+								Classes.free-bad="{Binding IsFreeBad}"/>
+				</Border>
+			</StackPanel>
+		</ScrollViewer>
+	</DockPanel>
 </Window>

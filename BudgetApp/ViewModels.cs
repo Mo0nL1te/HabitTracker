@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using Avalonia.Media;
 
 namespace BudgetApp;
 
@@ -182,8 +181,7 @@ public class MonthVM : INotifyPropertyChanged
         }
     }
 
-    public bool IsSelected { get; set; }
-    public bool IsCurrent { get; set; }
+    public bool IsCurrent => Root.Current == this;
 
     public void Refresh(Dictionary<string, decimal> carry)
     {
@@ -233,7 +231,10 @@ public class MonthVM : INotifyPropertyChanged
         N(nameof(HasNoItems));
         N(nameof(IncomeText));
         N(nameof(FreeText));
-        //N(nameof(SquareClasses));
+        N(nameof(IsFreeOk));
+        N(nameof(IsFreeBad));
+        N(nameof(IsDone));
+        N(nameof(IsCurrent));
     }
 
     // ---- Свободные деньги ----
@@ -251,9 +252,8 @@ public class MonthVM : INotifyPropertyChanged
 
     public string FreeText => $"Свободные деньги: {FreeMoney:N0} ₽";
 
-    public IBrush FreeBrush => FreeMoney >= 0
-        ? new SolidColorBrush(Color.Parse("#2E9E5B"))
-        : new SolidColorBrush(Color.Parse("#D9483B"));
+    public bool IsFreeOk => FreeMoney >= 0;
+    public bool IsFreeBad => FreeMoney < 0;
 }
 
 public class ItemVM
@@ -273,21 +273,32 @@ public class ItemVM
     // подпись «(перенос −N)», если эффективный план уменьшен переносом
     public string CarryNote => CarryIn > 0 ? $"(перенос −{CarryIn:N0})" : "";
 
-    public IBrush CounterBrush
+    public bool IsOk
     {
         get
         {
-            if (!Optional)
-                return Spent >= Plan
-                    ? new SolidColorBrush(Color.Parse("#2E9E5B"))
-                    : new SolidColorBrush(Colors.Red);
+            if (!Optional) return Spent >= Plan;
+            return EffPlan > 0 && (double)(Spent / EffPlan) < 0.7;
+        }
+    }
 
-            if (EffPlan <= 0)
-                return new SolidColorBrush(Color.Parse("#D9483B"));
+    public bool IsWarn
+    {
+        get
+        {
+            if (!Optional) return false;
+            double share = EffPlan > 0 ? (double)(Spent / EffPlan) : 1;
+            return share >= 0.7 && share <= 1.0;
+        }
+    }
 
-            double share = (double)(Spent / EffPlan);
-            var hex = share < 0.7 ? "#2E9E5B" : share <= 1.0 ? "#D7A100" : "#D9483B";
-            return new SolidColorBrush(Color.Parse(hex));
+    public bool IsBad
+    {
+        get
+        {
+            if (!Optional) return Spent < Plan;
+            if (EffPlan <= 0) return true;
+            return (double)(Spent / EffPlan) > 1.0;
         }
     }
 }
