@@ -56,13 +56,13 @@
 			<Setter Property="Padding" Value="0"/>
 			<Setter Property="CornerRadius" Value="7"/>
 			<Setter Property="FontSize" Value="12"/>
-			<Setter Property="Background" Value="{DynamicResource ButtonBackgroundColor}"/>
+			<Setter Property="Background" Value="{DynamicResource ButtonBackgroundBrush}"/>
 			<Setter Property="BorderThickness" Value="0"/>
 			<Setter Property="HorizontalContentAlignment" Value="Center"/>
 			<Setter Property="VerticalContentAlignment" Value="Center"/>
 		</Style>
 		<Style Selector="Button.square.done">
-			<Setter Property="Background" Value="{DynamicResource ButtonBackgroundColor}"/>
+			<Setter Property="Background" Value="{DynamicResource ButtonBackgroundBrush}"/>
 			<Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
 		</Style>
 		<Style Selector="Button.square.current">
@@ -131,6 +131,14 @@
 			</DockPanel>
 		</Border>
 
+		<!-- Свободные деньги -->
+		<Border DockPanel.Dock="Bottom" Classes="card" Margin="16,10,16,10"
+            Background="{DynamicResource ButtonBackgroundBrush}">
+			<TextBlock Text="{Binding Current.FreeText}" Classes="free"
+					   Classes.free-ok="{Binding Current.IsFreeOk}"
+					   Classes.free-bad="{Binding Current.IsFreeBad}"/>
+		</Border>
+		
 		<ScrollViewer>
 			<StackPanel Margin="16" DataContext="{Binding Current}">
 
@@ -200,12 +208,6 @@
 							<Button Grid.Column="2" Content="+ разовая" Click="OnAddOneOff"/>
 						</Grid>
 					</StackPanel>
-				</Border>
-				<!-- Свободные деньги -->
-				<Border Classes="card">
-					<TextBlock Text="{Binding FreeText}" Classes="free"
-								Classes.free-ok="{Binding IsFreeOk}"
-								Classes.free-bad="{Binding IsFreeBad}"/>
 				</Border>
 			</StackPanel>
 		</ScrollViewer>
