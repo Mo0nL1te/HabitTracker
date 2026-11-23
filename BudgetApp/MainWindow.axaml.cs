@@ -93,4 +93,12 @@ public partial class MainWindow : Window
         VM.Data.GetMonth(ovm.Owner.Key).OneOffs.Remove(ovm.Model);
         VM.SaveAndRecalc();
     }
+
+    private void OnEditItem(object? sender, RoutedEventArgs e)
+    {
+        if ((sender as Control)?.DataContext is not ItemVM ivm) return;
+
+        var editVm = new ItemEditVM(VM, ivm.Model, ivm.Owner.Key);
+        new ItemEditWindow(VM, editVm).ShowDialog(this);
+    }
 }

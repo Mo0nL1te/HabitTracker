@@ -205,6 +205,7 @@ public class MonthVM : INotifyPropertyChanged
 
             var vm = new ItemVM
             {
+                Model = it,
                 Name = it.Name,
                 Optional = it.Optional,
                 Plan = it.Plan,
@@ -258,6 +259,7 @@ public class MonthVM : INotifyPropertyChanged
 
 public class ItemVM
 {
+    public Item Model { get; set; } = null!;
     public string Name { get; set; } = "";
     public bool Optional { get; set; }
     public decimal Plan { get; set; }
@@ -326,6 +328,103 @@ public class OneOffVM
                 ? $"{Model.Date[8..]}.{Model.Date[5..7]} — "
                 : "";
             return $"{d}{Model.Name} — {Model.Amount:N0} ₽";
+        }
+    }
+}
+
+public class ItemEditVM
+{
+    public ItemEditVM(MainWindowViewModel root, Item item, string monthKey)
+    {
+        Root = root;
+        Item = item;
+        MonthKey = monthKey;
+        Expenses = new ObservableCollection<ExpenseEditVM>(
+            root.Data.GetMonth(monthKey).Expenses
+                .Where(e => e.Item == item.Name)
+                .Select(e => new ExpenseEditVM { Model = e, Owner = this }));
+    }
+
+    public MainWindowViewModel Root { get; }
+    public Item Item { get; }
+    public string MonthKey { get; }
+
+    public string NameText
+    {
+        get => Item.Name;
+        set
+        {
+            var newName = value.Trim();
+            if (newName.Length == 0 || newName == Item.Name) return;
+            // переименование во всех месяцах, чтобы траты не потеряли связь со статьёй
+            var old = Item.Name;
+            foreach (var m in Root.Data.Months.Values)
+                foreach (var exp in m.Expenses)
+                    if (exp.Item == old) exp.Item = newName;
+            Item.Name = newName;
+        }
+    }
+
+    public string PlanText
+    {
+        get => Item.Plan.ToString("N0");
+        set
+        {
+            if (decimal.TryParse(value, NumberStyles.Number,
+                    CultureInfo.GetCultureInfo("ru-RU"), out var v) && v >= 0)
+                Item.Plan = v;
+        }
+    }
+
+    public ObservableCollection<ExpenseEditVM> Expenses { get; }
+
+    public bool HasNoExpenses => Expenses.Count == 0;
+
+    public string NewDateText { get; set; } = DateTime.Today.ToString("yyyy-MM-dd");
+    public string NewAmountText { get; set; } = "";
+
+    public void AddNew()
+    {
+        if (!decimal.TryParse(NewAmountText, NumberStyles.Number,
+                CultureInfo.GetCultureInfo("ru-RU"), out var amt) || amt <= 0)
+            return;
+        var date = NewDateText.Trim();
+        if (date.Length < 10) date = DateTime.Today.ToString("yyyy-MM-dd");
+
+        var exp = new Expense { Item = Item.Name, Amount = amt, Date = date };
+        Root.Data.GetMonth(MonthKey).Expenses.Add(exp);
+        Expenses.Add(new ExpenseEditVM { Model = exp, Owner = this });
+        NewAmountText = "";
+    }
+
+    public void RemoveExpense(ExpenseEditVM row)
+    {
+        Root.Data.GetMonth(MonthKey).Expenses.Remove(row.Model);
+        Expenses.Remove(row);
+    }
+
+    public void Save() => Root.SaveAndRecalc();
+}
+
+public class ExpenseEditVM
+{
+    public Expense Model { get; set; } = null!;
+    public ItemEditVM Owner { get; set; } = null!;
+
+    public string DateText
+    {
+        get => Model.Date;
+        set { if (value.Trim().Length >= 10) Model.Date = value.Trim(); }
+    }
+
+    public string AmountText
+    {
+        get => Model.Amount.ToString("N0");
+        set
+        {
+            if (decimal.TryParse(value, NumberStyles.Number,
+                    CultureInfo.GetCultureInfo("ru-RU"), out var v) && v >= 0)
+                Model.Amount = v;
         }
     }
 }
