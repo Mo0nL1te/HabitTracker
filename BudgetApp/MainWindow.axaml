@@ -9,27 +9,21 @@
 		<!-- Шаблон статьи (обязательной и необязательной) -->
 		<DataTemplate x:Key="ItemTemplate">
 			<StackPanel Margin="0,6,0,0">
-				<StackPanel Orientation="Horizontal" Spacing="8">
-					<TextBlock Text="{Binding Name}" FontWeight="SemiBold" Classes="row"/>
-					<TextBlock Text="{Binding CounterText}" Classes="cnt"
-							   Classes.ok="{Binding IsOk}"
-							   Classes.warn="{Binding IsWarn}"
-							   Classes.bad="{Binding IsBad}"/>
-					<TextBlock Text="{Binding CarryNote}" Foreground="#C26A00" Classes="row"/>
-					<TextBox Width="90" VerticalAlignment="Center"
-							 Text="{Binding AddAmountText}" Watermark="сумма"/>
-					<Button Content="+ трата" Classes="mini" Click="OnAddExpense"/>
-				</StackPanel>
-				<ItemsControl ItemsSource="{Binding Expenses}" Margin="14,2,0,0">
-					<ItemsControl.ItemTemplate>
-						<DataTemplate>
-							<Grid ColumnDefinitions="*,Auto">
-								<TextBlock Text="{Binding Text}"/>
-								<Button Grid.Column="1" Content="✕" Classes="mini" Click="OnRemoveExpense"/>
-							</Grid>
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl>
+				<Grid ColumnDefinitions="*,Auto,Auto">
+					<StackPanel Orientation="Horizontal" Spacing="8">
+						<TextBlock Text="{Binding Name}" FontWeight="SemiBold" Classes="row"/>
+						<TextBlock Text="{Binding CounterText}" Classes="cnt"
+								   Classes.ok="{Binding IsOk}"
+								   Classes.warn="{Binding IsWarn}"
+								   Classes.bad="{Binding IsBad}"/>
+						<TextBlock Text="{Binding CarryNote}" Foreground="#C26A00" Classes="row"/>
+						<TextBox Width="90" VerticalAlignment="Center"
+								 Text="{Binding AddAmountText}" Watermark="сумма"/>
+						<Button Content="+ трата" Classes="mini" Click="OnAddExpense"/>
+					</StackPanel>
+					<Button Grid.Column="2" Content="⚙" Classes="mini" Click="OnEditItem"
+							ToolTip.Tip="Редактировать статью и траты"/>
+				</Grid>
 			</StackPanel>
 		</DataTemplate>
 	</Window.Resources>
@@ -138,7 +132,7 @@
 					   Classes.free-ok="{Binding Current.IsFreeOk}"
 					   Classes.free-bad="{Binding Current.IsFreeBad}"/>
 		</Border>
-		
+
 		<ScrollViewer>
 			<StackPanel Margin="16" DataContext="{Binding Current}">
 
